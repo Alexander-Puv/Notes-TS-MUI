@@ -1,26 +1,24 @@
+import { deepmerge } from '@mui/utils';
+import { Experimental_CssVarsProvider as CssVarsProvider,
+    experimental_extendTheme as extendMuiTheme } from '@mui/material/styles';
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Main } from './components/Main';
+import SideBar from './components/SideBar';
+import { AppMain } from './components/styledComponents/AppMain';
+import { AppTheme } from './styles/AppTheme';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const theme = deepmerge(extendMuiTheme(), AppTheme);
+    
+    return (
+        <CssVarsProvider theme={theme} >
+            <AppMain>
+                <SideBar />
+                <Main />
+            </AppMain>
+        </CssVarsProvider >
+    );
 }
 
 export default App;
