@@ -6,14 +6,14 @@ export const AppTheme = extendTheme({
         light: {
             palette: {
                 primary: {
-                    solidBg: '#e2e1e0'
+                    
                 }
             }
         },
         dark: {
             palette: {
-                background: {
-                    body: '#e2e1e0'
+                primary: {
+                    
                 }
             }
         }

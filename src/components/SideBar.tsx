@@ -1,15 +1,16 @@
 import SearchIcon from '@mui/icons-material/Search';
 import { Button, TextField } from '@mui/material';
 import React from 'react';
+import { INote } from '../types/Notes';
 import { Note } from './styledComponents/Note';
-import { Search } from './styledComponents/Search'
+import { Search } from './styledComponents/Search';
 
 interface SearchState {
     searchVal: string;
 }
 
 interface SideBarProps {
-
+    notes?: INote[]
 }
 
 export default class SideBar extends React.Component<SideBarProps, SearchState> {
@@ -42,9 +43,10 @@ export default class SideBar extends React.Component<SideBarProps, SearchState> 
                     />
                     <Button variant={'contained'} onClick={this.onSearch}><SearchIcon /></Button>
                 </Search>
-                <Note>
-                    log
-                </Note>
+                <Note header='New note' text='No additioanal text' time={new Date()}/>
+                {this.props.notes && this.props.notes.map(note => 
+                    <Note header={note.header} text={note.text} time={note.time} key={note.id} />
+                )}
             </div>
         )
     }
