@@ -1,57 +1,46 @@
-import { styled } from '@mui/material';
-import { FC } from 'react';
-
-//var(--mui-palette-text-primary)
-
-const NoteBody = styled('div')(({ theme }) => ({
-    borderRadius: 0,
-    padding: '10px 20px',
-    cursor: 'pointer',
-    backgroundImage: 'none',
-    color: theme.typography.body1.color,
-    '&.chosen': {
-        backgroundImage: 'var(--mui-overlays-1)',
-    },
-}))
-
-const Header = styled('div')(({ theme }) => ({
-    fontFamily: theme.typography.h1.fontFamily,
-    fontSize: theme.typography.h6.fontSize,
-    fontWeight: theme.typography.h3.fontWeight,
-    marginBottom: 5
-}))
-
-const Content = styled('div')(() => ({
-    display: 'flex',
-    gap: 10
-}))
-
-const Time = styled('div')(({ theme }) => ({
-    fontFamily: theme.typography.h1.fontFamily,
-}))
-
-const Text = styled('div')(({ theme }) => ({
-    fontFamily: theme.typography.h1.fontFamily,
-}))
+import { FC, useContext } from 'react';
+import { AppContext } from '../../context/context';
+import { INote } from '../../types/INote';
+import { Content, Header, MainNoteBody, NoteBody, Text, Time } from './NoteElements';
 
 interface NoteParams {
-    header: string,
-    text: string,
-    time: Date,
-    chosen?: boolean
+    note: INote,
+    chosen?: boolean,
 }
 
-export const Note: FC<NoteParams> = ({header, text, time, chosen = false}) => {
-    const currentTime = time.toLocaleTimeString();
-    const currentDate = time.toLocaleDateString();
+export const SideBarNote: FC<NoteParams> = ({note, chosen = false}) => {
+    const context = useContext(AppContext);
+    const currentTime = note.time.toLocaleTimeString();
+    const currentDate = note.time.toLocaleDateString();
+
+    const func = (e: React.MouseEvent<HTMLElement>) => {
+        if (context?.currentNote.id !== note.id) {
+            context?.setCurrentNote({header: note.header, text: note.text, time: note.time})
+        }
+    }
 
     return (
-        <NoteBody className={chosen ? 'chosen' : ''}>
-            <Header>{header}</Header>
+        <NoteBody className={chosen ? 'chosen' : ''} onClick={func}>
+            <Header>{note.header}</Header>
             <Content>
-                <Time>{time.getDate() === new Date().getDate() ? currentTime : currentDate}</Time>
-                <Text>{text}</Text>
+                <Time>{note.time.getDate() === new Date().getDate() ? currentTime : currentDate}</Time>
+                <Text>{note.text}</Text>
             </Content>
         </NoteBody>
+    )
+}
+
+export const MainNote: FC<NoteParams> = ({note}) => {
+    const currentTime = note.time.toLocaleTimeString();
+    const currentDate = note.time.toLocaleDateString();
+
+    return (
+        <MainNoteBody>
+            <Time>{note.time.getDate() === new Date().getDate() ? currentTime : currentDate}</Time>
+            <Header>{note.header}</Header>
+            <Content>
+                <Text>{note.text}</Text>
+            </Content>
+        </MainNoteBody>
     )
 }
