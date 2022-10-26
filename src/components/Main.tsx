@@ -1,7 +1,6 @@
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
-import { Button } from '@mui/material';
-import { useColorScheme } from '@mui/material/styles';
+import { Button, useColorScheme } from '@mui/material';
 import { FC, useContext } from 'react';
 import { AppContext } from '../context/context';
 import { INote } from '../types/INote';
@@ -12,8 +11,8 @@ interface MainProps {
 }
 
 export const Main: FC<MainProps> = ({defaultNote}) => {
-    const { mode, setMode } = useColorScheme();
     const context = useContext(AppContext);
+    const { mode, setMode } = useColorScheme();
 
     return (
         <>

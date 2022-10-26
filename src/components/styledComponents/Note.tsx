@@ -10,7 +10,7 @@ interface NoteParams {
 
 export const SideBarNote: FC<NoteParams> = ({note, chosen = false}) => {
     const context = useContext(AppContext);
-    const currentTime = note.time.toLocaleTimeString();
+    const currentTime = note.time.toLocaleTimeString().slice(0, -3);
     const currentDate = note.time.toLocaleDateString();
 
     const func = (e: React.MouseEvent<HTMLElement>) => {
@@ -31,16 +31,13 @@ export const SideBarNote: FC<NoteParams> = ({note, chosen = false}) => {
 }
 
 export const MainNote: FC<NoteParams> = ({note}) => {
-    const currentTime = note.time.toLocaleTimeString();
-    const currentDate = note.time.toLocaleDateString();
+    const currentTime = note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
 
     return (
         <MainNoteBody>
-            <Time>{note.time.getDate() === new Date().getDate() ? currentTime : currentDate}</Time>
+            <Time>{currentTime}</Time>
             <Header>{note.header}</Header>
-            <Content>
-                <Text>{note.text}</Text>
-            </Content>
+            <Text>{note.text}</Text>
         </MainNoteBody>
     )
 }
