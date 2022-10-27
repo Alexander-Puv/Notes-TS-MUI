@@ -5,6 +5,7 @@ export const NoteBody = styled('div')(({ theme }) => ({
     cursor: 'pointer',
     backgroundImage: 'none',
     color: theme.typography.body1.color,
+    fontFamily: theme.typography.h1.fontFamily,
     '&.chosen': {
         backgroundImage: 'var(--mui-overlays-1)',
     },
@@ -27,21 +28,33 @@ export const MainNoteBody = styled('div')(({ theme }) => ({
     flexDirection: 'column',
     padding: '10px',
     backgroundImage: 'none',
-    color: theme.typography.body1.color,
+    '*': {
+        color: theme.typography.body1.color + ' !important',
+        background: theme.palette.background.default + ' !important',
+        fontFamily: theme.typography.h1.fontFamily,
+    },
     'span': {
         textAlign: 'center'
     },
     'h1': {
         margin: '10px 0 15px',
         fontSize: theme.typography.h4.fontSize,
-    }
+    },
 }))
 
 export const Header = styled('h1')(({ theme }) => ({
-    fontFamily: theme.typography.h1.fontFamily,
     fontSize: theme.typography.h6.fontSize,
     fontWeight: theme.typography.h3.fontWeight,
-    marginBottom: 5
+    marginBottom: 5,
+    outline: 'none'
+}))
+
+export const HeaderInput = styled('input')(({ theme }) => ({
+    fontSize: theme.typography.h6.fontSize + ' !important',
+    fontWeight: theme.typography.h3.fontWeight,
+    marginBottom: 5,
+    outline: 'none',
+    border: 0,
 }))
 
 export const Content = styled('div')(() => ({
@@ -49,10 +62,6 @@ export const Content = styled('div')(() => ({
     gap: 10
 }))
 
-export const Time = styled('span')(({ theme }) => ({
-    fontFamily: theme.typography.h1.fontFamily,
-}))
+export const Time = styled('span')(({ theme }) => ({}))
 
-export const Text = styled('p')(({ theme }) => ({
-    fontFamily: theme.typography.h1.fontFamily,
-}))
+export const Text = styled('p')(({ theme }) => ({outline: 'none'}))

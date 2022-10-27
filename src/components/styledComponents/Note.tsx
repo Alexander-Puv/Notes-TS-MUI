@@ -1,7 +1,11 @@
-import { FC, useContext } from 'react';
+import { Editor } from 'draft-js';
+import React, { FC, useContext, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { INote } from '../../types/INote';
-import { Content, Header, MainNoteBody, NoteBody, Text, Time } from './NoteElements';
+import { BLOCK_RENDER_MAP } from '../Editor/EditorConfig';
+import { ToolPanel } from '../Editor/ToolPanel';
+import { useEditor } from '../Editor/useEditor';
+import { Content, Header, HeaderInput, MainNoteBody, NoteBody, Text, Time } from './NoteElements';
 
 interface NoteParams {
     note: INote,
@@ -15,7 +19,7 @@ export const SideBarNote: FC<NoteParams> = ({note, chosen = false}) => {
 
     const func = (e: React.MouseEvent<HTMLElement>) => {
         if (context?.currentNote.id !== note.id) {
-            context?.setCurrentNote({header: note.header, text: note.text, time: note.time})
+            context?.setCurrentNote({header: note.header, text: note.text, time: note.time, id: note.id});
         }
     }
 
@@ -31,13 +35,27 @@ export const SideBarNote: FC<NoteParams> = ({note, chosen = false}) => {
 }
 
 export const MainNote: FC<NoteParams> = ({note}) => {
+    const [header, setHeader] = useState(note.id === 'def' ? '' : note.header)
+    const context = useContext(AppContext);
     const currentTime = note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
+    const {text, onChange} = useEditor()
+    
+    /* setTimeout(() => {
+        if (header !== note.header || text !== note.text) {
+            context?.setCurrentNote({header: header, text: text, time: new Date()})
+            console.log(context);
+        }
+    }, 5000) */
 
     return (
         <MainNoteBody>
             <Time>{currentTime}</Time>
-            <Header>{note.header}</Header>
-            <Text>{note.text}</Text>
+            <HeaderInput placeholder='Note header' value={header} onChange={e => setHeader(e.target.value)} />
+            <div>
+                <ToolPanel />
+                <Editor placeholder='Note text' editorState={text} onChange={onChange} blockRenderMap={BLOCK_RENDER_MAP} />
+            </div>
+            {/* <Text/> */}
         </MainNoteBody>
     )
 }
