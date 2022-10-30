@@ -1,11 +1,8 @@
-import { Editor } from 'draft-js';
 import React, { FC, useContext, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { INote } from '../../types/INote';
-import { BLOCK_RENDER_MAP } from '../Editor/EditorConfig';
-import { ToolPanel } from '../Editor/ToolPanel';
-import { useEditor } from '../Editor/useEditor';
-import { Content, Header, HeaderInput, MainNoteBody, NoteBody, Text, Time } from './NoteElements';
+import { TextEditor } from './TextEditor';
+import { Content, Header, HeaderInput, MainNoteBody, NoteBody, Text, Time } from '../styledComponents/NoteElements';
 
 interface NoteParams {
     note: INote,
@@ -38,7 +35,7 @@ export const MainNote: FC<NoteParams> = ({note}) => {
     const [header, setHeader] = useState(note.id === 'def' ? '' : note.header)
     const context = useContext(AppContext);
     const currentTime = note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
-    const {text, onChange} = useEditor()
+    //const {text, onChange} = useEditor()
     
     /* setTimeout(() => {
         if (header !== note.header || text !== note.text) {
@@ -51,10 +48,7 @@ export const MainNote: FC<NoteParams> = ({note}) => {
         <MainNoteBody>
             <Time>{currentTime}</Time>
             <HeaderInput placeholder='Note header' value={header} onChange={e => setHeader(e.target.value)} />
-            <div>
-                <ToolPanel />
-                <Editor placeholder='Note text' editorState={text} onChange={onChange} blockRenderMap={BLOCK_RENDER_MAP} />
-            </div>
+            <TextEditor />
             {/* <Text/> */}
         </MainNoteBody>
     )

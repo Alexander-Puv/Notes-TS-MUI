@@ -2,7 +2,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Button, TextField } from '@mui/material';
 import React from 'react';
 import { INote } from '../types/INote';
-import { SideBarNote } from './styledComponents/Note';
+import { SideBarNote } from './UI/Note';
 import { Search } from './styledComponents/Search';
 
 interface SearchState {

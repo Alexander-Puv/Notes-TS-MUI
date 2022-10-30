@@ -4,7 +4,7 @@ import { Button, useColorScheme } from '@mui/material';
 import { FC, useContext } from 'react';
 import { AppContext } from '../context/context';
 import { INote } from '../types/INote';
-import { MainNote } from './styledComponents/Note';
+import { MainNote } from './UI/Note';
 
 interface MainProps {
     defaultNote: INote

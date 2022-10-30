@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@mantine/rte": "^5.6.3",
     "@mui/icons-material": "^5.10.9",
     "@mui/joy": "^5.0.0-alpha.50",
     "@mui/material": "^5.10.10",
@@ -16,8 +17,6 @@
     "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
     "dexie": "^3.2.2",
-    "draft-convert": "^2.1.13",
-    "draft-js": "^0.11.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
@@ -47,9 +46,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/draft-convert": "^2.1.4",
-    "@types/draft-js": "^0.11.9"
   }
 }

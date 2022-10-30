@@ -19,6 +19,7 @@ export const Search = styled('div')(({ theme }) => ({
         alignSelf: 'right',
         '&, &:hover': {
             boxShadow: 'none',
+            background: theme.palette.primary.main
         }
     },
 }));

@@ -50,7 +50,7 @@ export const Header = styled('h1')(({ theme }) => ({
 }))
 
 export const HeaderInput = styled('input')(({ theme }) => ({
-    fontSize: theme.typography.h6.fontSize + ' !important',
+    fontSize: theme.typography.h2.fontSize + ' !important',
     fontWeight: theme.typography.h3.fontWeight,
     marginBottom: 5,
     outline: 'none',
@@ -62,6 +62,6 @@ export const Content = styled('div')(() => ({
     gap: 10
 }))
 
-export const Time = styled('span')(({ theme }) => ({}))
+export const Time = styled('span')(() => ({}))
 
-export const Text = styled('p')(({ theme }) => ({outline: 'none'}))
+export const Text = styled('p')(() => ({outline: 'none'}))
