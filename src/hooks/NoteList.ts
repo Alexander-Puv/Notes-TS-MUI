@@ -1,7 +1,7 @@
 import { useLiveQuery } from "dexie-react-hooks";
-import { db } from "../../data/db";
+import { db } from "../data/db";
 
-export function NoteList () {
+export function useDexie () {
     const notes = useLiveQuery(
         () => db.notes.toArray()
     );
