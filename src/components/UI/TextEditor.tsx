@@ -3,7 +3,7 @@ import {RichTextEditor} from '@mantine/rte';
 import { EditorContainer } from '../styledComponents/EditorContainer';
 
 export const TextEditor: FC = () => {
-    const [value, onChange] = useState('');
+    const [value, onChange] = useState('<p>Note text</p>');
 
     return (
         <EditorContainer>
@@ -18,6 +18,7 @@ export const TextEditor: FC = () => {
                 ]}
                 style={{border: 0}}
             />
+            <div style={{height: 63}}></div>
         </EditorContainer>
     );
 }

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Main } from './components/Main';
 import SideBar from './components/SideBar';
 import { AppMain } from './components/styledComponents/AppMain';
+import { NoteList } from './components/UI/NoteList';
 import { AppContext } from './context/context';
 import './styles/App.css';
 import { AppTheme } from './styles/AppTheme';
@@ -16,6 +17,7 @@ function App() {
     const theme = deepmerge(extendMuiTheme(), AppTheme);
     const defaultNote: INote = {header: 'New note', text: 'No additioanal text', time: new Date(), id: 'def'};
     const [currentNote, setCurrentNote] = useState(defaultNote);
+    const notes = NoteList();
     
     return (
         <AppContext.Provider value={{
@@ -23,7 +25,7 @@ function App() {
         }}>
         <CssVarsProvider theme={theme} >
             <AppMain>
-                <SideBar defaultNote={defaultNote} />
+                <SideBar defaultNote={defaultNote} notes={notes ? notes : undefined} />
                 <Main defaultNote={defaultNote} />
             </AppMain>
         </CssVarsProvider >

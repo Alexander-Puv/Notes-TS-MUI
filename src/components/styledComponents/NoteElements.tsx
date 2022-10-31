@@ -29,7 +29,7 @@ export const MainNoteBody = styled('div')(({ theme }) => ({
     padding: '10px',
     backgroundImage: 'none',
     '*': {
-        color: theme.typography.body1.color + ' !important',
+        color: theme.typography.body1.color,
         background: theme.palette.background.default + ' !important',
         fontFamily: theme.typography.h1.fontFamily,
     },
@@ -63,5 +63,4 @@ export const Content = styled('div')(() => ({
 }))
 
 export const Time = styled('span')(() => ({}))
-
-export const Text = styled('p')(() => ({outline: 'none'}))
+export const Text = styled('p')(() => ({}))

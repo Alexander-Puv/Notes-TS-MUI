@@ -35,7 +35,6 @@ export const MainNote: FC<NoteParams> = ({note}) => {
     const [header, setHeader] = useState(note.id === 'def' ? '' : note.header)
     const context = useContext(AppContext);
     const currentTime = note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
-    //const {text, onChange} = useEditor()
     
     /* setTimeout(() => {
         if (header !== note.header || text !== note.text) {
@@ -47,9 +46,8 @@ export const MainNote: FC<NoteParams> = ({note}) => {
     return (
         <MainNoteBody>
             <Time>{currentTime}</Time>
-            <HeaderInput placeholder='Note header' value={header} onChange={e => setHeader(e.target.value)} />
+            <HeaderInput placeholder='New note' value={header} onChange={e => setHeader(e.target.value)} />
             <TextEditor />
-            {/* <Text/> */}
         </MainNoteBody>
     )
 }

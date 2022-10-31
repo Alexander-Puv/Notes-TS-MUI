@@ -1,6 +1,30 @@
 import { styled } from '@mui/material';
 
 export const EditorContainer = styled('div')(({ theme }) => ({
+    '.ql-toolbar': {
+        position: 'fixed',
+        top: 'calc(100vh - 63px)',
+        marginRight: '10px',
+        width: '-webkit-fill-available',
+        border: 0,
+        'div:first-of-type': {
+            justifyContent: 'center',
+        },
+        'button': {
+            '*': {
+                transition: `${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`,
+            },
+            '&.ql-active *': {
+                color: theme.palette.primary.dark + ' !important',
+            },
+            '&:hover *': {
+                color: theme.palette.primary.dark + ' !important',
+            }
+        },
+    },
+    '.ql-editor': {
+        padding: 0,
+    },
     'h1': {
         fontSize: theme.typography.h4.fontSize,
         fontWeight: theme.typography.h3.fontWeight,
@@ -16,18 +40,7 @@ export const EditorContainer = styled('div')(({ theme }) => ({
     'p, li': {
         fontSize: theme.typography.htmlFontSize,
     },
-    'a': {
+    'a, a *': {
         color: theme.palette.primary.dark + ' !important'
-    },
-    'button': {
-        '*': {
-            transition: `${theme.transitions.duration.short}ms ${theme.transitions.easing.easeInOut}`,
-        },
-        '&.ql-active *': {
-            color: theme.palette.primary.dark + ' !important',
-        },
-        '&:hover *': {
-            color: theme.palette.primary.dark + ' !important',
-        }
     },
 }))
