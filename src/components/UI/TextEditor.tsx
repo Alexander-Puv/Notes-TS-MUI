@@ -1,14 +1,17 @@
-import React, { FC, useState } from 'react';
-import {RichTextEditor} from '@mantine/rte';
+import { RichTextEditor } from '@mantine/rte';
+import React, { FC } from 'react';
 import { EditorContainer } from '../styledComponents/EditorContainer';
 
-export const TextEditor: FC = () => {
-    const [value, onChange] = useState('<p>Note text</p>');
+interface TextEditorProps {
+    text: string,
+    setText: React.Dispatch<React.SetStateAction<string>>
+}
 
+export const TextEditor: FC<TextEditorProps> = ({text, setText}) => {
     return (
         <EditorContainer>
             <RichTextEditor
-                value={value} onChange={onChange}
+                value={text} onChange={setText}
                 controls={[
                     ['bold', 'strike', 'italic', 'underline', 'link'],
                     ['h1', 'h2', 'h3'],
@@ -17,6 +20,7 @@ export const TextEditor: FC = () => {
                     ['clean']
                 ]}
                 style={{border: 0}}
+                placeholder='Note text'
             />
             <div style={{height: 63}}></div>
         </EditorContainer>

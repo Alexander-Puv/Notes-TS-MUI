@@ -3,34 +3,35 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import Save from '@mui/icons-material/Save';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useColorScheme } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { db } from '../../data/db';
 import { BtnsContainer } from '../styledComponents/BtnsContainer';
 
 export const MainBtns = () => {
     const [open, setOpen] = useState(false);
-    const [header, setHeader] = useState('');
-    const [text, setText] = useState('');
-    const [time, setTime] = useState(new Date());
     const [status, setStatus] = useState('');
-    const context = useContext(AppContext);
     const { mode, setMode } = useColorScheme();
-  
-    async function addNote() {
-        try {
-            const id = await db.notes.add({
-                header,
-                text,
-                time
-            });
+    const context = useContext(AppContext);
+    const header = context ? context.currentNote.header : '';
+    const text = context ? context.currentNote.text : '';
     
-            setStatus(`Note ${header} successfully added. Got id ${id}`);
-            setHeader(context ? context?.currentNote.header : '');
-            setText(context ? context?.currentNote.text : '');
-            setTime(context ? context?.currentNote.time : new Date());
-        } catch (error) {
-            setStatus(`Failed to add ${header}: ${error}`);
+
+    async function addNote() {
+        if (header || text) {
+            try {
+                const id = await db.notes.add({
+                    header,
+                    text,
+                    time: new Date()
+                });
+        
+                setStatus(`Note ${header} successfully added. Got id ${id}`);
+            } catch (error) {
+                setStatus(`Failed to add ${header}: ${error}`);
+            }
+        } else {
+            setStatus(`You have to write header or text first`);
         }
     }
 

@@ -25,6 +25,12 @@ export const EditorContainer = styled('div')(({ theme }) => ({
     '.ql-editor': {
         padding: 0,
     },
+    '.ql-blank::before': {
+        left: 0,
+        right: 0,
+        color: theme.palette.grey[400],
+        fontSize: theme.typography.htmlFontSize,
+    },
     'h1': {
         fontSize: theme.typography.h4.fontSize,
         fontWeight: theme.typography.h3.fontWeight,

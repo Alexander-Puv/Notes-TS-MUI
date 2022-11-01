@@ -1,8 +1,8 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useMemo, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { INote } from '../../types/INote';
-import { TextEditor } from './TextEditor';
 import { Content, Header, HeaderInput, MainNoteBody, NoteBody, Text, Time } from '../styledComponents/NoteElements';
+import { TextEditor } from './TextEditor';
 
 interface NoteParams {
     note: INote,
@@ -22,32 +22,37 @@ export const SideBarNote: FC<NoteParams> = ({note, chosen = false}) => {
 
     return (
         <NoteBody className={chosen ? 'chosen' : ''} onClick={func}>
-            <Header>{note.header}</Header>
+            <Header>{note.header ? note.header : 'New note'}</Header>
             <Content>
                 <Time>{note.time.getDate() === new Date().getDate() ? currentTime : currentDate}</Time>
-                <Text>{note.text}</Text>
+                <Text>{note.text ? note.text : 'No additional text'}</Text>
             </Content>
         </NoteBody>
     )
 }
 
 export const MainNote: FC<NoteParams> = ({note}) => {
-    const [header, setHeader] = useState(note.id === 'def' ? '' : note.header)
+    const [header, setHeader] = useState(note.header);
+    const [text, setText] = useState(note.text);
     const context = useContext(AppContext);
     const currentTime = note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
-    
-    /* setTimeout(() => {
-        if (header !== note.header || text !== note.text) {
+
+    const co = useMemo(() => {
+        if (header || text) {
             context?.setCurrentNote({header: header, text: text, time: new Date()})
-            console.log(context);
+            console.log(true);
         }
-    }, 5000) */
+    }, [header, text])
+    
+    const onHeaderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setHeader(e.target.value);
+    }
 
     return (
         <MainNoteBody>
             <Time>{currentTime}</Time>
-            <HeaderInput placeholder='New note' value={header} onChange={e => setHeader(e.target.value)} />
-            <TextEditor />
+            <HeaderInput placeholder='New note' value={header} onChange={onHeaderChange} />
+            <TextEditor text={text} setText={setText}/>
         </MainNoteBody>
     )
 }
