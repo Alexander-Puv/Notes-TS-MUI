@@ -3,41 +3,57 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import Save from '@mui/icons-material/Save';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useColorScheme } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { db } from '../../data/db';
+import { useRemoveTags } from '../../hooks/useRemoveTags';
 import { BtnsContainer } from '../styledComponents/BtnsContainer';
 
 export const MainBtns = () => {
     const [open, setOpen] = useState(false);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState(['', false]);
     const { mode, setMode } = useColorScheme();
     const context = useContext(AppContext);
     const header = context ? context.currentNote.header : '';
-    const text = context ? context.currentNote.text : '';
-    
+    const text = useRemoveTags(context?.currentNote.text);
+
+    useEffect(() => {
+        status[0] &&
+        setTimeout(async () => {
+            setStatus(['', false]);
+        }, 5000)
+    }, [status])
 
     async function addNote() {
         if (header || text) {
             try {
-                const id = await db.notes.add({
-                    header,
-                    text,
-                    time: new Date()
-                });
-        
-                setStatus(`Note ${header} successfully added. Got id ${id}`);
+                if (context?.currentNote.id === 'def') {
+                    const id = await db.notes.add({
+                        header,
+                        text,
+                        time: new Date(),
+                    });
+                    context.setCurrentNote({
+                        header,
+                        text,
+                        time: new Date(),
+                        id: id.toString()
+                    })
+                    console.log(db.notes);
+                    
+
+                    setStatus([`Note ${header} successfully updated`, true]);
+                } else {
+                    await db.notes.where({id: context?.currentNote.id}).modify(n => {n.header = header; n.text = text})
+                    setStatus([`Note ${header} successfully changed`, true]);
+                }
             } catch (error) {
-                setStatus(`Failed to add ${header}: ${error}`);
+                setStatus([`Failed to add ${header}: ${error}`, false]);
             }
         } else {
-            setStatus(`You have to write header or text first`);
+            setStatus([`You have to write header or text first`, false]);
         }
     }
-
-    /* useEffect(() => {
-        context?.setCurrentNote();
-    }, [header, text, time]) */
   
     const handleClose = () => {
       setOpen(false);
@@ -45,7 +61,6 @@ export const MainBtns = () => {
 
     return (
         <BtnsContainer>
-            {status}
             <Button>
                 <DeleteIcon className='delete' onClick={() => setOpen(true)} />
                 <Dialog
@@ -80,6 +95,7 @@ export const MainBtns = () => {
             <Button onClick={addNote}>
                 <Save />
             </Button>
+                {status[0] && <span className={`status ${status[1]}`}>{status}</span>}
             <Button onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
                 {mode === 'dark' ? <LightModeIcon className='light' /> : <NightsStayIcon className='night' />}
             </Button>

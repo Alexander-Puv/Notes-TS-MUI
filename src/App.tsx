@@ -5,10 +5,10 @@ import {
 import { deepmerge } from '@mui/utils';
 import { useState } from 'react';
 import { Main } from './components/Main';
-import SideBar from './components/SideBar';
+import { SideBar } from './components/SideBar';
 import { AppMain } from './components/styledComponents/AppMain';
-import { useDexie } from './hooks/useDexie';
 import { AppContext } from './context/context';
+import { useDexie } from './hooks/useDexie';
 import './styles/App.css';
 import { AppTheme } from './styles/AppTheme';
 import { INote } from './types/INote';
