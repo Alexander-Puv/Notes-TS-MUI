@@ -33,6 +33,9 @@ export const BtnsContainer = styled('div')(({ theme }) => ({
             '&::before': {
             borderBottomColor: theme.palette.success.main
             }
-        }
+        },
+        '&.deleteNote::before': {
+            left: 7,
+        },
     }
 }))

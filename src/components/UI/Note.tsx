@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { INote } from '../../types/INote';
 import { Content, Header, HeaderInput, MainNoteBody, NoteBody, Text, Time } from '../styledComponents/NoteElements';
@@ -12,10 +12,6 @@ export const SideBarNote: FC<NoteParams> = ({note}) => {
     const context = useContext(AppContext);
     const currentTime = note.time.toLocaleTimeString().slice(0, -3);
     const currentDate = note.time.toLocaleDateString();
-    /* useEffect(() => {
-        
-        console.log(context);
-    }, [context]) */
 
     const func = (e: React.MouseEvent<HTMLElement>) => {
         if (context?.currentNote.id !== note.id) {
@@ -46,7 +42,7 @@ export const MainNote: FC<NoteParams> = ({note}) => {
     }, [note.id])
 
     useEffect(() => {
-        context?.setCurrentNote({header: header, text: text, time: note.time, id: note.id});
+        context?.setCurrentNote({...note, header, text});
     }, [header, text])
     
     const onHeaderChange = (e: React.ChangeEvent<HTMLInputElement>) => {

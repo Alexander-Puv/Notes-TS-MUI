@@ -21,7 +21,7 @@ function App() {
     
     return (
         <AppContext.Provider value={{
-            currentNote, setCurrentNote
+            currentNote, setCurrentNote, defaultNote
         }}>
         <CssVarsProvider theme={theme} >
             <AppMain>

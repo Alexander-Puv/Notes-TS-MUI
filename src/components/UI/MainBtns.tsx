@@ -11,7 +11,7 @@ import { BtnsContainer } from '../styledComponents/BtnsContainer';
 
 export const MainBtns = () => {
     const [open, setOpen] = useState(false);
-    const [status, setStatus] = useState(['', false]);
+    const [status, setStatus] = useState(['', false, '']);
     const { mode, setMode } = useColorScheme();
     const context = useContext(AppContext);
     const header = context ? context.currentNote.header : '';
@@ -20,7 +20,7 @@ export const MainBtns = () => {
     useEffect(() => {
         status[0] &&
         setTimeout(async () => {
-            setStatus(['', false]);
+            setStatus(['', false, '']);
         }, 5000)
     }, [status])
 
@@ -39,24 +39,37 @@ export const MainBtns = () => {
                         time: new Date(),
                         id: id.toString()
                     })
-                    console.log(db.notes);
-                    
 
-                    setStatus([`Note ${header} successfully updated`, true]);
+                    setStatus([`Note ${header} successfully updated`, true, 'saveNote']);
                 } else {
-                    await db.notes.where({id: context?.currentNote.id}).modify(n => {n.header = header; n.text = text})
-                    setStatus([`Note ${header} successfully changed`, true]);
+                    await db.notes.where({id: context?.currentNote.id}).modify(n => {n.header = header; n.text = text; n.time = new Date()})
+                    setStatus([`Note ${header} successfully changed`, true, 'saveNote']);
                 }
             } catch (error) {
-                setStatus([`Failed to add ${header}: ${error}`, false]);
+                setStatus([`Failed to add ${header}: ${error}`, false, 'saveNote']);
             }
         } else {
-            setStatus([`You have to write header or text first`, false]);
+            setStatus([`You have to write header or text first`, false, 'saveNote']);
         }
     }
   
     const handleClose = () => {
-      setOpen(false);
+        setOpen(false);
+    };
+
+    const deleteNote = async () => {
+        try {
+            if (context?.currentNote.id !== 'def') {
+                await db.notes.where({id: context?.currentNote.id}).delete()
+                context?.setCurrentNote({...context?.defaultNote})
+                setStatus([`Note ${header} successfully deleted`, true, 'deleteNote']);
+            } else {
+                setStatus([`You can't delete default note`, false, 'deleteNote']);
+            }
+        } catch (error) {
+            setStatus([`Failed to add ${header}: ${error}`, false, 'deleteNote']);
+        }
+        setOpen(false);
     };
 
     return (
@@ -79,7 +92,7 @@ export const MainBtns = () => {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Cancel</Button>
-                        <Button onClick={handleClose}
+                        <Button onClick={deleteNote}
                             sx={(theme) => ({
                                 color: theme.palette.error.main,
                                 '&:hover': {
@@ -95,10 +108,10 @@ export const MainBtns = () => {
             <Button onClick={addNote}>
                 <Save />
             </Button>
-                {status[0] && <span className={`status ${status[1]}`}>{status}</span>}
             <Button onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
                 {mode === 'dark' ? <LightModeIcon className='light' /> : <NightsStayIcon className='night' />}
             </Button>
+            {status[0] && <span className={`status ${status[1]} ${status[2]}`}>{status[0]}</span>}
         </BtnsContainer>
     )
 }
