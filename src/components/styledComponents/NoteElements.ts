@@ -50,6 +50,7 @@ export const Header = styled('h1')(({ theme }) => ({
 }))
 
 export const HeaderInput = styled('input')(({ theme }) => ({
+    width: '100%',
     fontSize: theme.typography.h2.fontSize + ' !important',
     fontWeight: theme.typography.h3.fontWeight,
     marginBottom: 5,

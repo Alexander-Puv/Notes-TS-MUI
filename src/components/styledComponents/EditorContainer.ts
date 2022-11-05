@@ -1,6 +1,12 @@
 import { styled } from '@mui/material';
 
 export const EditorContainer = styled('div')(({ theme }) => ({
+    '.toolsAreFine': {
+        height: 63,
+        '@media (max-width: 510px)': {
+            height: 98,
+        },
+    },
     '.ql-toolbar': {
         position: 'fixed',
         top: 'calc(100vh - 63px)',
@@ -20,6 +26,9 @@ export const EditorContainer = styled('div')(({ theme }) => ({
             '&:hover *': {
                 color: theme.palette.primary.dark + ' !important',
             }
+        },
+        '@media (max-width: 510px)': {
+            top: 'calc(100vh - 98px)',
         },
     },
     '.ql-editor': {

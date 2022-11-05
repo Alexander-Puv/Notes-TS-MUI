@@ -22,7 +22,7 @@ export const TextEditor: FC<TextEditorProps> = ({text, setText}) => {
                 style={{border: 0}}
                 placeholder='Note text'
             />
-            <div style={{height: 63}}></div>
+            <div className='toolsAreFine'></div>
         </EditorContainer>
     );
 }

@@ -1,6 +1,7 @@
 import { FC, useContext } from 'react';
 import { AppContext } from '../context/context';
 import { INote } from '../types/INote';
+import { SMain } from './styledComponents/SMain';
 import { MainBtns } from './UI/MainBtns';
 import { MainNote } from './UI/Note';
 
@@ -13,9 +14,9 @@ export const Main: FC<MainProps> = ({defaultNote}) => {
     
     return (
         <>
-        <div className='main'>
+        <SMain>
             <MainNote note={context ? context.currentNote : defaultNote}/>
-        </div>
+        </SMain>
         <MainBtns />
         </>
     )
