@@ -1,5 +1,6 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/context';
+import { useRemoveTags } from '../../hooks/useRemoveTags';
 import { INote } from '../../types/INote';
 import { Content, Header, HeaderInput, MainNoteBody, NoteBody, Text, Time } from '../styledComponents/NoteElements';
 import { TextEditor } from './TextEditor';
@@ -12,6 +13,7 @@ export const SideBarNote: FC<NoteParams> = ({note}) => {
     const context = useContext(AppContext);
     const currentTime = note.time.toLocaleTimeString().slice(0, -3);
     const currentDate = note.time.toLocaleDateString();
+    const text = useRemoveTags(note.text);
 
     const func = (e: React.MouseEvent<HTMLElement>) => {
         if (context?.currentNote.id !== note.id) {
@@ -24,7 +26,7 @@ export const SideBarNote: FC<NoteParams> = ({note}) => {
             <Header>{note.header ? note.header : 'New note'}</Header>
             <Content>
                 <Time>{note.time.getDate() === new Date().getDate() ? currentTime : currentDate}</Time>
-                <Text>{note.text ? note.text : 'No additional text'}</Text>
+                <Text>{text ? text : 'No additional text'}</Text>
             </Content>
         </NoteBody>
     )

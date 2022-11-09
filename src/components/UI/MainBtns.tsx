@@ -15,7 +15,7 @@ export const MainBtns = () => {
     const { mode, setMode } = useColorScheme();
     const context = useContext(AppContext);
     const header = context ? context.currentNote.header : '';
-    const text = useRemoveTags(context?.currentNote.text);
+    const text = context ? context.currentNote.text : '';
 
     useEffect(() => {
         status[0] &&

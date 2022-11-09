@@ -1,4 +1,3 @@
-export const useRemoveTags = (text: string | undefined) => {
-    return text ?  text.replace(/<\/?[^>]+(>|$)/g, "")
-    : ''
+export const useRemoveTags = (text: string) => {
+    return text.replace(/<\/?[^>]+(>|$)/g, "")
 }
