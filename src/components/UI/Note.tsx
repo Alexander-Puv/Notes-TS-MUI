@@ -59,3 +59,31 @@ export const MainNote: FC<NoteParams> = ({note}) => {
         </MainNoteBody>
     )
 }
+
+/* export const MainNote: FC<NoteParams> = ({note}) => {
+    const headerRef = useRef<HTMLInputElement>(null);
+    const textRef = useRef<HTMLInputElement>(null);
+    const context = useContext(AppContext);
+    const currentTime = note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
+    
+    useEffect(() => {
+        console.log(headerRef.current?.value);
+        console.log(textRef.current?.value);
+    }, [headerRef.current?.value, textRef.current?.value])
+
+    useMemo(() => {
+        console.log(true);
+        
+        const header = headerRef.current?.value ?? '';
+        const text = textRef.current?.value ?? '';
+        context?.setCurrentNote({...note, header, text});
+    }, [headerRef.current?.value, textRef.current?.value])
+
+    return (
+        <MainNoteBody>
+            <Time>{currentTime}</Time>
+            <HeaderInput placeholder='New note' ref={headerRef} />
+            <TextEditor text={textRef} />
+        </MainNoteBody>
+    )
+} */

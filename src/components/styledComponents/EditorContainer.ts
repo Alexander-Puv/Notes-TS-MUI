@@ -33,6 +33,7 @@ export const EditorContainer = styled('div')(({ theme }) => ({
     },
     '.ql-editor': {
         padding: 0,
+        wordBreak: 'break-word'
     },
     '.ql-blank::before': {
         left: 0,

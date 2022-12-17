@@ -26,3 +26,29 @@ export const TextEditor: FC<TextEditorProps> = ({text, setText}) => {
         </EditorContainer>
     );
 }
+
+// interface TextEditorProps {
+//     text: RefObject<any>
+// }
+
+// export const TextEditor: FC<TextEditorProps> = ({text}) => {
+//     console.log(text);
+    
+//     return (
+//         <EditorContainer>
+//             <RichTextEditor
+//                 ref={text}
+//                 controls={[
+//                     ['bold', 'strike', 'italic', 'underline', 'link'],
+//                     ['h1', 'h2', 'h3'],
+//                     ['unorderedList', 'orderedList'],
+//                     ['alignLeft', 'alignCenter', 'alignRight'],
+//                     ['clean']
+//                 ]}
+//                 style={{border: 0}}
+//                 placeholder='Note text'
+//             />
+//             <div className='toolsAreFine'></div>
+//         </EditorContainer>
+//     );
+// }

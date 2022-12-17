@@ -3,7 +3,7 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import Save from '@mui/icons-material/Save';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useColorScheme } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { db } from '../../data/db';
 import { useRemoveTags } from '../../hooks/useRemoveTags';
@@ -24,7 +24,7 @@ export const MainBtns = () => {
         }, 5000)
     }, [status])
 
-    async function addNote() {
+    const addNote = useCallback(async () => {
         if (header || text) {
             try {
                 if (context?.currentNote.id === 'def') {
@@ -51,7 +51,7 @@ export const MainBtns = () => {
         } else {
             setStatus([`You have to write header or text first`, false, 'saveNote']);
         }
-    }
+    }, [])
   
     const handleClose = () => {
         setOpen(false);
