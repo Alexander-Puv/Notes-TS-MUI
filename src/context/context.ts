@@ -1,10 +1,9 @@
-import { createContext, Dispatch } from "react";
-import { INote } from "../types/INote";
+import { Dispatch, createContext } from "react";
+import { ActionType, IState } from "../reducer/reducerTypes";
 
 interface IAppContext {
-    currentNote: INote,
-    setCurrentNote: Dispatch<React.SetStateAction<INote>>,
-    defaultNote: INote
+    state: IState,
+    dispatch: Dispatch<ActionType>
 }
 
 export const AppContext = createContext<IAppContext | null>(null);

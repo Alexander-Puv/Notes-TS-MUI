@@ -1,21 +1,14 @@
-import { FC, useContext } from 'react';
-import { AppContext } from '../context/context';
-import { INote } from '../types/INote';
-import { SMain } from './styledComponents/SMain';
+import React from 'react';
 import { MainBtns } from './UI/MainBtns';
 import { MainNote } from './UI/Note';
+import { SMain } from './styledComponents/SMain';
 
-interface MainProps {
-    defaultNote: INote
-}
-
-export const Main: FC<MainProps> = ({defaultNote}) => {
-    const context = useContext(AppContext);
+export const Main = () => {
     
     return (
         <>
         <SMain>
-            <MainNote note={context ? context.currentNote : defaultNote}/>
+            <MainNote />
         </SMain>
         <MainBtns />
         </>

@@ -1,6 +1,7 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { useRemoveTags } from '../../hooks/useRemoveTags';
+import { NoteActionTypes } from '../../reducer/reducerTypes';
 import { INote } from '../../types/INote';
 import { Content, Header, HeaderInput, MainNoteBody, NoteBody, Text, Time } from '../styledComponents/NoteElements';
 import { TextEditor } from './TextEditor';
@@ -9,20 +10,25 @@ interface NoteParams {
     note: INote,
 }
 
-export const SideBarNote: FC<NoteParams> = ({note}) => {
+export const SideBarNote = ({note}: NoteParams) => {
     const context = useContext(AppContext);
     const currentTime = note.time.toLocaleTimeString().slice(0, -3);
     const currentDate = note.time.toLocaleDateString();
     const text = useRemoveTags(note.text);
+    const [className, setClassName] = useState(context?.state.note?.id?.toString() === note.id?.toString() ? 'chosen' : '')
 
-    const func = (e: React.MouseEvent<HTMLElement>) => {
-        if (context?.currentNote.id !== note.id) {
-            context?.setCurrentNote({header: note.header, text: note.text, time: note.time, id: note.id});
+    useEffect(() => {
+        setClassName(context?.state.note?.id?.toString() === note.id?.toString() ? 'chosen' : '')
+    }, [context?.state.note?.id])
+
+    const selectNote = () => {
+        if (context?.state.note.id !== note.id) {
+            context?.dispatch({type: NoteActionTypes.SET_NOTE, payload: note})
         }
     }
 
     return (
-        <NoteBody className={context?.currentNote.id === note.id ? 'chosen' : ''} onClick={func}>
+        <NoteBody className={className} onClick={selectNote}>
             <Header>{note.header ? note.header : 'New note'}</Header>
             <Content>
                 <Time>{note.time.getDate() === new Date().getDate() ? currentTime : currentDate}</Time>
@@ -32,19 +38,19 @@ export const SideBarNote: FC<NoteParams> = ({note}) => {
     )
 }
 
-export const MainNote: FC<NoteParams> = ({note}) => {
-    const [header, setHeader] = useState(note.header);
-    const [text, setText] = useState(note.text);
+export const MainNote = () => {
     const context = useContext(AppContext);
-    const currentTime = note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
+    const [header, setHeader] = useState(context?.state.note.header ?? '');
+    const [text, setText] = useState(context?.state.note.text ?? '');
+    const currentTime = context?.state.note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
+    
+    useEffect(() => {
+        setHeader(context?.state.note.header ?? '')
+        setText(context?.state.note.text ?? '')
+    }, [context?.state.note?.id])
 
     useEffect(() => {
-        setHeader(note.header);
-        setText(note.text);
-    }, [note.id])
-
-    useEffect(() => {
-        context?.setCurrentNote({...note, header, text});
+        context?.dispatch({type: NoteActionTypes.SET_NOTE, payload: {...context?.state.note, header, text}})
     }, [header, text])
     
     const onHeaderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,31 +65,3 @@ export const MainNote: FC<NoteParams> = ({note}) => {
         </MainNoteBody>
     )
 }
-
-/* export const MainNote: FC<NoteParams> = ({note}) => {
-    const headerRef = useRef<HTMLInputElement>(null);
-    const textRef = useRef<HTMLInputElement>(null);
-    const context = useContext(AppContext);
-    const currentTime = note.time.toLocaleDateString('default', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric' });
-    
-    useEffect(() => {
-        console.log(headerRef.current?.value);
-        console.log(textRef.current?.value);
-    }, [headerRef.current?.value, textRef.current?.value])
-
-    useMemo(() => {
-        console.log(true);
-        
-        const header = headerRef.current?.value ?? '';
-        const text = textRef.current?.value ?? '';
-        context?.setCurrentNote({...note, header, text});
-    }, [headerRef.current?.value, textRef.current?.value])
-
-    return (
-        <MainNoteBody>
-            <Time>{currentTime}</Time>
-            <HeaderInput placeholder='New note' ref={headerRef} />
-            <TextEditor text={textRef} />
-        </MainNoteBody>
-    )
-} */

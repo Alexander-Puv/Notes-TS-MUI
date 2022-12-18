@@ -5,13 +5,13 @@ import { Search } from './styledComponents/Search';
 import { SideBarNote } from './UI/Note';
 import MenuIcon from '@mui/icons-material/Menu';
 import { SSideBar } from './styledComponents/SSideBar';
+import { defaultNote } from '../utils/defaultNote';
 
 interface SideBarProps {
-    defaultNote: INote,
     notes?: INote[]
 }
 
-export const SideBar: FC<SideBarProps> = (props) => {
+export const SideBar = ({notes}: SideBarProps) => {
     const [searchVal, setSearchVal] = useState('');
     const [isOpenMenu, setIsOpenMenu] = useState(false);
 
@@ -20,8 +20,8 @@ export const SideBar: FC<SideBarProps> = (props) => {
     }
 
     const searcehdNotes = useMemo(() => {
-        return props.notes?.filter(note => note.header.includes(searchVal))
-    }, [searchVal, props.notes])
+        return notes?.filter(note => note.header.includes(searchVal))
+    }, [searchVal, notes])
 
     return (
         <SSideBar className={`${isOpenMenu}`}>
@@ -39,7 +39,7 @@ export const SideBar: FC<SideBarProps> = (props) => {
                 </Search>
             </div>
             <div className='notesContainer'>
-                <SideBarNote note={props.defaultNote}/>
+                <SideBarNote note={defaultNote}/>
                 {searcehdNotes && searcehdNotes.map(note => 
                     <SideBarNote note={{header: note.header, text: note.text, time: note.time, id: note.id}} key={note.id}/>
                 )}

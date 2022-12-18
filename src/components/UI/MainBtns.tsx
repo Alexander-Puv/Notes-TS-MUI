@@ -3,19 +3,21 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import NightsStayIcon from '@mui/icons-material/NightsStay';
 import Save from '@mui/icons-material/Save';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, useColorScheme } from '@mui/material';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { AppContext } from '../../context/context';
 import { db } from '../../data/db';
-import { useRemoveTags } from '../../hooks/useRemoveTags';
+import { NoteActionTypes } from '../../reducer/reducerTypes';
+import { defaultNote } from '../../utils/defaultNote';
 import { BtnsContainer } from '../styledComponents/BtnsContainer';
+
+const SaveNote = 'saveNote'
+const DeleteNote = 'deleteNote'
 
 export const MainBtns = () => {
     const [open, setOpen] = useState(false);
     const [status, setStatus] = useState(['', false, '']);
     const { mode, setMode } = useColorScheme();
     const context = useContext(AppContext);
-    const header = context ? context.currentNote.header : '';
-    const text = context ? context.currentNote.text : '';
 
     useEffect(() => {
         status[0] &&
@@ -25,49 +27,52 @@ export const MainBtns = () => {
     }, [status])
 
     const addNote = useCallback(async () => {
+        const header = context ? context.state.note.header : '';
+        const text = context ? context.state.note.text : '';
         if (header || text) {
             try {
-                if (context?.currentNote.id === 'def') {
+                if (context?.state.note.id === 'def') {
                     const id = await db.notes.add({
                         header,
                         text,
                         time: new Date(),
                     });
-                    context.setCurrentNote({
+                    context?.dispatch({type: NoteActionTypes.SET_NOTE, payload: {
                         header,
                         text,
                         time: new Date(),
                         id: id.toString()
-                    })
+                    }})
 
-                    setStatus([`Note ${header} successfully updated`, true, 'saveNote']);
+                    setStatus([`Note ${header} successfully updated`, true, SaveNote]);
                 } else {
-                    await db.notes.where({id: context?.currentNote.id}).modify(n => {n.header = header; n.text = text; n.time = new Date()})
-                    setStatus([`Note ${header} successfully changed`, true, 'saveNote']);
+                    await db.notes.where({id: context?.state.note?.id}).modify(n => {n.header = header; n.text = text; n.time = new Date()})
+                    setStatus([`Note ${header} successfully changed`, true, SaveNote]);
                 }
             } catch (error) {
-                setStatus([`Failed to add ${header}: ${error}`, false, 'saveNote']);
+                setStatus([`Failed to add ${header}: ${error}`, false, SaveNote]);
             }
         } else {
-            setStatus([`You have to write header or text first`, false, 'saveNote']);
+            setStatus([`You have to write header or text first`, false, SaveNote]);
         }
-    }, [])
+    }, [context?.state])
   
     const handleClose = () => {
         setOpen(false);
     };
 
     const deleteNote = async () => {
+        const header = context ? context.state.note.header : '';
         try {
-            if (context?.currentNote.id !== 'def') {
-                await db.notes.where({id: context?.currentNote.id}).delete()
-                context?.setCurrentNote({...context?.defaultNote})
-                setStatus([`Note ${header} successfully deleted`, true, 'deleteNote']);
+            if (context?.state.note?.id !== 'def') {
+                await db.notes.where({id: context?.state.note?.id}).delete()
+                context?.dispatch({type: NoteActionTypes.SET_NOTE, payload: defaultNote})
+                setStatus([`Note ${header} successfully deleted`, true, DeleteNote]);
             } else {
-                setStatus([`You can't delete default note`, false, 'deleteNote']);
+                setStatus([`You can't delete default note`, false, DeleteNote]);
             }
         } catch (error) {
-            setStatus([`Failed to add ${header}: ${error}`, false, 'deleteNote']);
+            setStatus([`Failed to add ${header}: ${error}`, false, DeleteNote]);
         }
         setOpen(false);
     };
